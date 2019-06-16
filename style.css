@@ -1,0 +1,10 @@
+.center {
+  text-align: center;
+}
+
+span {
+  display: inline-block;
+  border: solid 1px black;
+  min-width: 500px;
+  max-width: 1000px;
+}
