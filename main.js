@@ -15,8 +15,9 @@ function format() {
     fetch(endpoint)
       .then(blob => blob.json())
       .then(data => {infoPieces.push(...data)
-                     info += ": " + infoPieces[2][1];
+                     info += ": " + infoPieces[2][0];
                      console.log(info);
+                     form.value += info + "\n";
       });
   });
 }
