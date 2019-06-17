@@ -8,6 +8,17 @@ function format() {
   formatList = list.split('\n');
   console.log(formatList);
   form.value = "";
+
+  formatList.forEach(function(info) {
+    const endpoint = `https://en.wikipedia.org/w/api.php?action=opensearch&format=json&origin=*&search=${info}`;
+    let infoPieces = [];
+    fetch(endpoint)
+      .then(blob => blob.json())
+      .then(data => {infoPieces.push(...data)
+                     info += ": " + infoPieces[2][1];
+                     console.log(info);
+      });
+  });
 }
 
 submit.addEventListener('click', format);
