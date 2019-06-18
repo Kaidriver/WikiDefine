@@ -14,11 +14,25 @@ function format() {
     let infoPieces = [];
     fetch(endpoint)
       .then(blob => blob.json())
-      .then(data => {infoPieces.push(...data)
-                     info += ": " + infoPieces[2][0];
-                     console.log(info);
-                     form.value += info + "\n";
+      .then(data => {
+        infoPieces.push(...data)
+        console.log(infoPieces);
+        if (infoPieces[2].length == 0) {
+          info += ": ";
+          form.value += info + "Definition can not be found, try a different phrase" + "\n";
+          console.log("hi");
+        }
+        else if (infoPieces[2][0].includes("refers to")) {
+          info += ": " + infoPieces[2][1];
+          form.value += info + "\n";
+        }
+        else {
+          info += ": " + infoPieces[2][0];
+          form.value += info + "\n";
+        }
+
       });
+
   });
 }
 
