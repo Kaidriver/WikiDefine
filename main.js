@@ -1,7 +1,20 @@
 const submit = document.querySelector('button');
 const form = document.querySelector('textarea');
+const spanList = document.querySelector('ul');
 var list;
 var formatList;
+var infoList = [];
+var html = [];
+function createSpan(info) {
+  let element = `
+    <li>
+      <span class = "word text-center">${info}</span>
+      <span class = "definition">${infoList[infoList.length-1][1]}</span>
+      <button type = "button" class = "btn btn-primary">Next</button>
+    </li>
+  `;
+  html.push(element);
+}
 
 function format() {
   list = form.value;
@@ -17,23 +30,24 @@ function format() {
       .then(data => {
         infoPieces.push(...data)
         console.log(infoPieces);
-        if (infoPieces[2].length == 0) {
-          info += ": ";
+        infoList.push(infoPieces[2]);
+        console.log(infoList[infoList.length-1]);
+        info += ": ";
+        if (infoList[infoList.length-1].length == 0) {
           form.value += info + "Definition can not be found, try a different phrase" + "\n";
           console.log("hi");
         }
-        else if (infoPieces[2][0].includes("refers to")) {
-          info += ": " + infoPieces[2][1];
-          form.value += info + "\n";
+        else if (infoList[infoList.length-1][0].includes("refers to")) {
+          form.value += info + infoList[infoList.length-1][1] + "\n";
         }
         else {
-          info += ": " + infoPieces[2][0];
-          form.value += info + "\n";
+          form.value += info + infoList[infoList.length-1][0] + "\n";
         }
-
+        createSpan(info);
+        spanList.innerHTML = html.join('');
       });
-
   });
+
 }
 
 submit.addEventListener('click', format);
