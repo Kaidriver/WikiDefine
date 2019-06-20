@@ -5,15 +5,29 @@ var list;
 var formatList;
 var infoList = [];
 var html = [];
+var indices = [];
+var counter = 0;
 function createSpan(info) {
   let element = `
-    <li>
+    <li data-key = ${counter}>
       <span class = "word text-center">${info}</span>
-      <span class = "definition">${infoList[infoList.length-1][1]}</span>
-      <button type = "button" class = "btn btn-primary">Next</button>
+      <span class = "definition">${infoList[infoList.length-1][indices[counter]]}</span>
+      <button type = "button" class = "btn btn-primary info" data-key = ${counter}>Next</button>
     </li>
   `;
+  counter++;
   html.push(element);
+}
+function changeDef() {
+  console.log("hi");
+  const index = this.getAttribute('data-key');
+  indices[index]++;
+  console.log(indices[index]);
+  const li = document.querySelector(`li[data-key="${index}"]`);
+  let newDef = document.createElement('span');
+  newDef.innerHTML = infoList[index][indices[index]];
+  console.log(newDef);
+  li.replaceChild(newDef, li.childNodes[3]);
 }
 
 function format() {
@@ -36,15 +50,22 @@ function format() {
         if (infoList[infoList.length-1].length == 0) {
           form.value += info + "Definition can not be found, try a different phrase" + "\n";
           console.log("hi");
+          indices.push(-1);
         }
         else if (infoList[infoList.length-1][0].includes("refers to")) {
           form.value += info + infoList[infoList.length-1][1] + "\n";
+          indices.push(1);
         }
         else {
           form.value += info + infoList[infoList.length-1][0] + "\n";
+          indices.push(0);
         }
         createSpan(info);
         spanList.innerHTML = html.join('');
+
+        const buttons = document.querySelectorAll('.info');
+        console.log(buttons);
+        buttons.forEach(button => button.addEventListener('click', changeDef));
       });
   });
 
