@@ -6,11 +6,12 @@ var formatList;
 var infoList = [];
 var html = [];
 var indices = [];
+var links = [];
 var counter = 0;
 function createSpan(info) {
   let element = `
     <li data-key = ${counter}>
-      <span class = "word text-center">${info}</span>
+      <span class = "word text-center"><a href = "${links[links.length-1][0]}">${info}</a></span>
       <span class = "definition">${infoList[infoList.length-1][indices[counter]]}</span>
       <button type = "button" class = "btn btn-primary info" data-key = ${counter}>Next</button>
     </li>
@@ -19,10 +20,18 @@ function createSpan(info) {
   html.push(element);
 }
 function changeDef() {
-  console.log("hi");
+
   const index = this.getAttribute('data-key');
-  indices[index]++;
+  console.log(infoList[index].length);
   console.log(indices[index]);
+  if (indices[index] >= infoList[index].length - 1) {
+    indices[index] = 0;
+    console.log("hi");
+  }
+  else {
+    indices[index]++;
+  }
+
   const li = document.querySelector(`li[data-key="${index}"]`);
   let newDef = document.createElement('span');
   newDef.innerHTML = infoList[index][indices[index]];
@@ -45,6 +54,7 @@ function format() {
         infoPieces.push(...data)
         console.log(infoPieces);
         infoList.push(infoPieces[2]);
+        links.push(infoPieces[3]);
         console.log(infoList[infoList.length-1]);
         info += ": ";
         if (infoList[infoList.length-1].length == 0) {
