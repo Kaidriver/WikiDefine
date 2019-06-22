@@ -8,3 +8,7 @@ span {
   min-width: 500px;
   max-width: 1000px;
 }
+
+ul {
+  list-style-type: none;
+}

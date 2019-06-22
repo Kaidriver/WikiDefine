@@ -10,10 +10,12 @@ var links = [];
 var counter = 0;
 function createSpan(info) {
   let element = `
-    <li data-key = ${counter}>
-      <span class = "word text-center"><a href = "${links[links.length-1][0]}">${info}</a></span>
-      <span class = "definition">${infoList[infoList.length-1][indices[counter]]}</span>
-      <button type = "button" class = "btn btn-primary info" data-key = ${counter}>Next</button>
+    <li class = "mb-2">
+      <div class = "row" data-key = ${counter}>
+        <span class = "word text-center col-4"><a href = "${links[links.length-1][0]}">${info}</a></span>
+        <span class = "definition col-6">${infoList[infoList.length-1][indices[counter]]}</span>
+        <button type = "button" class = "btn btn-primary info" data-key = ${counter}>Next</button>
+      </div>
     </li>
   `;
   counter++;
@@ -32,11 +34,13 @@ function changeDef() {
     indices[index]++;
   }
 
-  const li = document.querySelector(`li[data-key="${index}"]`);
+  const div = document.querySelector(`div[data-key="${index}"]`);
   let newDef = document.createElement('span');
   newDef.innerHTML = infoList[index][indices[index]];
-  console.log(newDef);
-  li.replaceChild(newDef, li.childNodes[3]);
+  newDef.classList.add("col-6");
+  console.log(div.childNodes[3]);
+  div.replaceChild(newDef, div.childNodes[3]);
+
 }
 
 function format() {
