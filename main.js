@@ -1,6 +1,8 @@
-const submit = document.querySelector('button');
+const submit = document.querySelector('.submit');
 const form = document.querySelector('textarea');
-const spanList = document.querySelector('ul');
+const divList = document.querySelector('ul');
+const copyBtn = document.querySelector('.copy');
+const clearBtn = document.querySelector('.clear');
 var list;
 var formatList;
 var infoList = [];
@@ -12,9 +14,9 @@ function createSpan(info) {
   let element = `
     <li class = "mb-2">
       <div class = "row" data-key = ${counter}>
-        <span class = "word text-center col-4"><a href = "${links[links.length-1][0]}">${info}</a></span>
-        <span class = "definition col-6">${infoList[infoList.length-1][indices[counter]]}</span>
-        <button type = "button" class = "btn btn-primary info" data-key = ${counter}>Next</button>
+        <div class = "word text-center col-3"><a href = "${links[links.length-1][0]}">${info}</a></div>
+        <div class = "definition col-7">${infoList[infoList.length-1][indices[counter]]}</div>
+        <button type = "button" class = "btn btn-primary info col-2" data-key = ${counter}>Next</button>
       </div>
     </li>
   `;
@@ -35,9 +37,10 @@ function changeDef() {
   }
 
   const div = document.querySelector(`div[data-key="${index}"]`);
-  let newDef = document.createElement('span');
+  let newDef = document.createElement('div');
   newDef.innerHTML = infoList[index][indices[index]];
-  newDef.classList.add("col-6");
+  newDef.classList.add("col-7");
+  newDef.classList.add("definition");
   console.log(div.childNodes[3]);
   div.replaceChild(newDef, div.childNodes[3]);
 
@@ -75,7 +78,7 @@ function format() {
           indices.push(0);
         }
         createSpan(info);
-        spanList.innerHTML = html.join('');
+        divList.innerHTML = html.join('');
 
         const buttons = document.querySelectorAll('.info');
         console.log(buttons);
@@ -85,4 +88,20 @@ function format() {
 
 }
 
+function copyToClip () {
+  form.select();
+  document.execCommand("copy");
+  alert("Copied!");
+  form.deSelect();
+}
+
+function clearInfo() {
+  form.value = "";
+  while (divList.firstChild) {
+    divList.removeChild(divList.firstChild);
+  }
+}
+
 submit.addEventListener('click', format);
+copyBtn.addEventListener('click', copyToClip);
+clearBtn.addEventListener('click', clearInfo);
